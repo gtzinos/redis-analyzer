@@ -25,12 +25,16 @@ pub struct Config {
     pub sort_order: SortOrder,
     pub scan_size: usize,
     pub memory_usage_samples: usize,
+    pub output_folder: Option<String>,
 }
 
 /// Analyzes keys in Redis to produce breakdown of the most frequent prefixes.
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None, styles = CLAP_STYLING)]
 struct Args {
+        /// Output folder for exported files (optional)
+        #[arg(long)]
+        output_folder: Option<String>,
     /// Maximum number of hosts scanned at the same time. [default: number of logical CPUs]
     #[arg(short, long, default_value_t = num_cpus::get())]
     concurrency: usize,
@@ -93,6 +97,7 @@ impl Config {
             sort_order: args.order,
             scan_size: args.scan_size,
             memory_usage_samples: args.memory_usage_samples,
+            output_folder: args.output_folder,
         })
     }
 
